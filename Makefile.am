@@ -526,6 +526,15 @@ duktape_DATA += \
 EXTRA_DIST += conf/janus.plugin.duktape.jcfg.sample.in
 endif
 
+if ENABLE_PLUGIN_SIPNOMEDIA
+plugin_LTLIBRARIES += plugins/libjanus_sipnomedia.la
+plugins_libjanus_sipnomedia_la_SOURCES = plugins/janus_sipnomedia.c
+plugins_libjanus_sipnomedia_la_CFLAGS = $(plugins_cflags) $(SOFIA_CFLAGS)
+plugins_libjanus_sipnomedia_la_LDFLAGS = $(plugins_ldflags) $(SOFIA_LDFLAGS) $(SOFIA_LIBS)
+plugins_libjanus_sipnomedia_la_LIBADD = $(plugins_libadd) $(SOFIA_LIBADD)
+conf_DATA += conf/janus.plugin.sipnomedia.jcfg.sample
+EXTRA_DIST += conf/janus.plugin.sipnomedia.jcfg.sample
+endif
 
 ##
 # Post-processing

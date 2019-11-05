@@ -174,6 +174,8 @@ AC_ARG_ENABLE([all-plugins],
                      [enable_plugin_videoroom=no])
                AS_IF([test "x$enable_plugin_voicemail" != "xyes"],
                      [enable_plugin_voicemail=no])
+               AS_IF([test "x$enable_plugin_sipnomedia" != "xyes"],
+                     [enable_plugin_sipnomedia=no])
               ],
               [])
 
@@ -741,6 +743,13 @@ AC_ARG_ENABLE([plugin-voicemail],
                      [enable_plugin_voicemail=no])],
               [enable_plugin_voicemail=maybe])
 
+AC_ARG_ENABLE([plugin-sipnomedia],
+              [AS_HELP_STRING([--disable-plugin-sipnomedia],
+                              [Disable sipnomedia plugin])],
+              [AS_IF([test "x$enable_plugin_sipnomedia" != "xyes"],
+                     [enable_plugin_sipnomedia=no])],
+              [enable_plugin_sipnomedia=maybe])
+
 PKG_CHECK_MODULES([SOFIA],
                   [sofia-sip-ua],
                   [
@@ -835,6 +844,19 @@ PKG_CHECK_MODULES([LUA],
 AC_SUBST([LUA_CFLAGS])
 AC_SUBST([LUA_LIBS])
 
+PKG_CHECK_MODULES([SOFIA],
+                  [sofia-sip-ua],
+                  [
+                    AS_IF([test "x$enable_plugin_sipnomedia" = "xmaybe"],
+                          [enable_plugin_sipnomedia=yes])
+                  ],
+                  [
+                    AS_IF([test "x$enable_plugin_sipnomedia" = "xyes"],
+                          [AC_MSG_ERROR([sofia-sip-ua not found. See README.md for installation instructions or use --disable-plugin-sipnomedia])])
+                  ])
+AC_SUBST([SOFIA_CFLAGS])
+AC_SUBST([SOFIA_LIBS])
+
 AM_CONDITIONAL([ENABLE_PLUGIN_AUDIOBRIDGE], [test "x$enable_plugin_audiobridge" = "xyes"])
 AM_CONDITIONAL([ENABLE_PLUGIN_DUKTAPE], [test "x$enable_plugin_duktape" = "xyes"])
 AM_CONDITIONAL([ENABLE_PLUGIN_ECHOTEST], [test "x$enable_plugin_echotest" = "xyes"])
@@ -848,6 +870,7 @@ AM_CONDITIONAL([ENABLE_PLUGIN_VIDEOCALL], [test "x$enable_plugin_videocall" = "x
 AM_CONDITIONAL([ENABLE_PLUGIN_VIDEOROOM], [test "x$enable_plugin_videoroom" = "xyes"])
 AM_CONDITIONAL([ENABLE_PLUGIN_VOICEMAIL], [test "x$enable_plugin_voicemail" = "xyes"])
 AM_CONDITIONAL([ENABLE_PLUGIN_TEXTROOM], [test "x$enable_plugin_textroom" = "xyes"])
+AM_CONDITIONAL([ENABLE_PLUGIN_SIPNOMEDIA], [test "x$enable_plugin_sipnomedia" = "xyes"])
 
 
 ##
@@ -1074,6 +1097,9 @@ AM_COND_IF([ENABLE_JAVASCRIPT_MODULES], [
 		[echo "    CommonJS syntax:       no"])
 	],
 	[echo "JavaScript modules:        no"])
+AM_COND_IF([ENABLE_PLUGIN_SIPNOMEDIA],
+	[echo "    SIP Gateway (no media):   yes"],
+	[echo "    SIP Gateway (no media):   no"])
 
 echo
 echo "If this configuration is ok for you, do a 'make' to start building Janus. A 'make install' will install Janus and its plugins to the specified prefix. Finally, a 'make configs' will install some sample configuration files too (something you'll only want to do the first time, though)."
