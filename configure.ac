@@ -1064,6 +1064,9 @@ AM_COND_IF([ENABLE_PLUGIN_LUA],
 AM_COND_IF([ENABLE_PLUGIN_DUKTAPE],
 	[echo "    Duktape Interpreter:   yes"],
 	[echo "    Duktape Interpreter:   no"])
+AM_COND_IF([ENABLE_PLUGIN_SIPNOMEDIA],
+	[echo "    SIP Gateway (no media):yes"],
+	[echo "    SIP Gateway (no media):no"])
 echo "Event handlers:"
 AM_COND_IF([ENABLE_SAMPLEEVH],
 	[echo "    Sample event handler:  yes"],
@@ -1097,9 +1100,6 @@ AM_COND_IF([ENABLE_JAVASCRIPT_MODULES], [
 		[echo "    CommonJS syntax:       no"])
 	],
 	[echo "JavaScript modules:        no"])
-AM_COND_IF([ENABLE_PLUGIN_SIPNOMEDIA],
-	[echo "    SIP Gateway (no media):   yes"],
-	[echo "    SIP Gateway (no media):   no"])
 
 echo
 echo "If this configuration is ok for you, do a 'make' to start building Janus. A 'make install' will install Janus and its plugins to the specified prefix. Finally, a 'make configs' will install some sample configuration files too (something you'll only want to do the first time, though)."

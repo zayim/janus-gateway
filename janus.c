@@ -4653,10 +4653,10 @@ gint main(int argc, char *argv[])
 				dlclose(plugin);
 				continue;
 			}
-			JANUS_LOG(LOG_VERB, "\tVersion: %d (%s)\n", janus_plugin->get_version(), janus_plugin->get_version_string());
-			JANUS_LOG(LOG_VERB, "\t   [%s] %s\n", janus_plugin->get_package(), janus_plugin->get_name());
-			JANUS_LOG(LOG_VERB, "\t   %s\n", janus_plugin->get_description());
-			JANUS_LOG(LOG_VERB, "\t   Plugin API version: %d\n", janus_plugin->get_api_compatibility());
+			JANUS_LOG(LOG_INFO, "\tVersion: %d (%s)\n", janus_plugin->get_version(), janus_plugin->get_version_string());
+			JANUS_LOG(LOG_INFO, "\t   [%s] %s\n", janus_plugin->get_package(), janus_plugin->get_name());
+			JANUS_LOG(LOG_INFO, "\t   %s\n", janus_plugin->get_description());
+			JANUS_LOG(LOG_INFO, "\t   Plugin API version: %d\n", janus_plugin->get_api_compatibility());
 			if(!janus_plugin->incoming_rtp && !janus_plugin->incoming_rtcp && !janus_plugin->incoming_data) {
 				JANUS_LOG(LOG_WARN, "The '%s' plugin doesn't implement any callback for RTP/RTCP/data... is this on purpose?\n",
 					janus_plugin->get_package());
