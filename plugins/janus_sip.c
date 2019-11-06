@@ -1776,6 +1776,7 @@ const char *janus_sip_get_author(void) {
 }
 
 const char *janus_sip_get_package(void) {
+	JANUS_LOG(LOG_INFO, "Getting package from SIP: (%s)\n", JANUS_SIP_PACKAGE);
 	return JANUS_SIP_PACKAGE;
 }
 

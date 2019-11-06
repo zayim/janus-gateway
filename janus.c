@@ -3058,6 +3058,7 @@ void janus_pluginso_close(gpointer key, gpointer value, gpointer user_data) {
 }
 
 janus_plugin *janus_plugin_find(const gchar *package) {
+	JANUS_LOG(LOG_INFO, "Searching '%s' plugin in hash table\n", package);
 	if(package != NULL && plugins != NULL)	/* FIXME Do we need to fix the key pointer? */
 		return g_hash_table_lookup(plugins, package);
 	return NULL;
@@ -4667,6 +4668,7 @@ gint main(int argc, char *argv[])
 			}
 			if(plugins == NULL)
 				plugins = g_hash_table_new(g_str_hash, g_str_equal);
+			JANUS_LOG(LOG_INFO, "Inserting '%s' plugin in hash table\n", (gpointer)janus_plugin->get_package());
 			g_hash_table_insert(plugins, (gpointer)janus_plugin->get_package(), janus_plugin);
 			if(plugins_so == NULL)
 				plugins_so = g_hash_table_new(g_str_hash, g_str_equal);
