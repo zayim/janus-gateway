@@ -42,11 +42,12 @@
 // in the presented order. The first working server will be used for
 // the whole session.
 //
+var host = 'localhost';
 var server = null;
 if(window.location.protocol === 'http:')
-	server = "http://" + window.location.hostname + ":8088/janus";
+	server = "ws://" + host + ":8188/janus";
 else
-	server = "https://" + window.location.hostname + ":8089/janus";
+	server = "wss://" + host + ":8188/janus";
 
 var janus = null;
 var sfutest = null;
@@ -54,7 +55,7 @@ var opaqueId = "videoroomtest-"+Janus.randomString(12);
 
 var myroom = 1234;	// Demo room
 var myusername = null;
-var myid = null;
+var myid = parseInt(Math.random() * Math.pow(10, 16));
 var mystream = null;
 // We use this other ID just to map our subscriptions to us
 var mypvtid = null;
@@ -385,7 +386,8 @@ function registerUsername() {
 			$('#register').removeAttr('disabled').click(registerUsername);
 			return;
 		}
-		var register = { "request": "join", "room": myroom, "ptype": "publisher", "display": username };
+		Janus.log("Registering with id: " + myid);
+		var register = { "request": "join", "room": myroom, "ptype": "publisher", "display": username, "id": myid };
 		myusername = username;
 		sfutest.send({"message": register});
 	}
