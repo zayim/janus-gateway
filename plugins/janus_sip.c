@@ -266,7 +266,8 @@
  *
 \verbatim
 {
-	"request" : "update"
+	"request" : "update",
+	"headers" : "<array of key/value objects, to specify custom headers to add to the re-INVITE; optional>"
 }
 \endverbatim
  *
@@ -3866,9 +3867,14 @@ static void *janus_sip_handler(void *data) {
 			session->media.update = offer;
 			JANUS_LOG(LOG_VERB, "Prepared SDP for update:\n%s", sdp);
 			if(session->status == janus_sip_call_status_incall) {
+				/* Check if a re-INVITE needs to be enriched with custom headers */
+				char custom_headers[2048];
+				janus_sip_parse_custom_headers(root, (char *)&custom_headers, sizeof(custom_headers));
+
 				/* We're sending a re-INVITE ourselves */
 				nua_invite(session->stack->s_nh_i,
 					SOATAG_USER_SDP_STR(sdp),
+					TAG_IF(strlen(custom_headers) > 0, SIPTAG_HEADER_STR(custom_headers)),
 					TAG_END());
 			} else {
 				/* We're answering to a re-INVITE we received */
